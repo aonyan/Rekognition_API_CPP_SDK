@@ -12,67 +12,6 @@
 
 using namespace std;
 
-#define CURL_TEST
-
-#ifdef CURL_TEST
-
-#include <curl/curl.h>
-bool CurlTest()
-{
-	bool RetVal						= true;
-	CURLcode ResCode				= CURL_LAST;
-	CURL *curl						= NULL;
-	string post_fields				= "";
-	// const string api_addr_base		= "https://rekognition.com/func/api/?";
-	const string api_addr_base = "http://google.com";
-
-	cout << api_addr_base << endl;
-
-	cout << "Starting CurlTest() ... \n";
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-	curl = curl_easy_init();
-	if (!curl) {
-		cerr << "CURL init error!" << endl;
-		return false;
-	}
-
-	curl_easy_setopt(curl, CURLOPT_URL, api_addr_base.c_str());
-	// curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-	// curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-
-	ResCode = curl_easy_perform(curl);
-	cout << ResCode << endl;
-
-	curl_easy_cleanup(curl);
-	
-	return RetVal;
-}
-
-int CurlTest2()
-{
-	CURL *curl;
-	CURLcode res;
-
-	curl = curl_easy_init();
-	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_URL, "http://google.com");
-		/* example.com is redirected, so we tell libcurl to follow redirection */
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-
-		/* Perform the request, res will get the return code */
-		res = curl_easy_perform(curl);
-		/* Check for errors */
-		if (res != CURLE_OK)
-			fprintf(stderr, "curl_easy_perform() failed: %s\n",
-			curl_easy_strerror(res));
-
-		/* always cleanup */
-		curl_easy_cleanup(curl);
-	}
-	return 1;
-}
-#endif
-
 int main(int argc, char **argv) {
 	Json::Value response;
 	const string api_addr_base = "http://rekognition.com/func/api/?";
@@ -84,7 +23,7 @@ int main(int argc, char **argv) {
 	query_config["jobs"] = "face";
 	//query_config["urls"] = "http://rekognition.com/static/img/people.jpg";
 
-	std::ifstream t("C:/Users/Go/Dropbox/Face/testfaces/prod/40290.jpg", ios::binary);  // **** CHANGE THIS ****
+	std::ifstream t("/home/simpsons/40290.jpg", ios::binary);  // **** CHANGE THIS ****
 	std::string buff_str((std::istreambuf_iterator<char>(t)),
 			std::istreambuf_iterator<char>());
 
